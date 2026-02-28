@@ -1,0 +1,32 @@
+
+name: 'retail_analytics_dbt'
+version: '1.0.0'
+config-version: 2
+
+profile: 'retail_analytics'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to be removed by 'dbt clean'
+  - "target"
+  - "dbt_packages"
+
+models:
+  retail_analytics_dbt:
+    # Configures all models in retail_analytics_dbt
+    staging:
+      +materialized: table
+    marts:
+      +materialized: table
+
+on-run-end:
+  - "DROP TABLE IF EXISTS {{ target.schema }}.stg_orders__dbt_tmp FORCE"
+  - "DROP TABLE IF EXISTS {{ target.schema }}.dim_customers__dbt_tmp FORCE"
+  - "DROP TABLE IF EXISTS {{ target.schema }}.dim_products__dbt_tmp FORCE"
+

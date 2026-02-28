@@ -1,0 +1,38 @@
+[project]
+name = "retail-analytics"
+version = "0.1.0"
+description = "Retail Analytics Pipeline with Dagster, StarRocks, and MinIO"
+readme = "README.md"
+authors = [
+    { name = "Chi Man Lei", email = "chimanlei@gmail.com" }
+]
+requires-python = ">=3.12, <3.13"
+dependencies = [
+    "dagster==1.12.15",
+    "dagster-webserver==1.12.15",
+    "dagster-dbt==0.28.15",
+    "dbt-core==1.11.6",
+    "dbt-starrocks==1.11.0",
+    "sqlalchemy==2.0.47",
+    "mysql-connector-python==9.6.0",
+    "pandas==3.0.1",
+]
+
+[dependency-groups]
+dev = [
+    "dagster-dg==0.1.18",
+]
+
+[tool.dagster]
+module_name = "dagster_project.definitions"
+
+[tool.dg]
+directory_type = "project"
+
+[tool.dg.project]
+root_module = "dagster_project"
+
+[build-system]
+requires = ["uv_build>=0.8.14,<0.9.0"]
+build-backend = "uv_build"
+

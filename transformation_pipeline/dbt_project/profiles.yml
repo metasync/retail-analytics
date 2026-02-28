@@ -1,0 +1,43 @@
+retail_analytics:
+  target: development
+  outputs:
+    development:
+      type: starrocks
+      host: "{{ env_var('STARROCKS_HOST') }}"
+      port: "{{ env_var('STARROCKS_PORT') | as_number }}"
+      user: "{{ env_var('STARROCKS_USER') }}"
+      # 'username' is required by the dbt-starrocks adapter/mysql-connector.
+      # If missing, it may default to the OS user, causing access denied errors.
+      username: "{{ env_var('STARROCKS_USER') }}"
+      password: "{{ env_var('STARROCKS_PASSWORD', '') }}"
+      dbname: "{{ env_var('STARROCKS_DB') }}"
+      schema: "{{ env_var('STARROCKS_DB') }}"
+      threads: 4
+      init_connect: 
+        - "SET new_planner_optimize_timeout = 60000" # Increase timeout to 60s
+
+    sandbox:
+      type: starrocks
+      host: "{{ env_var('STARROCKS_HOST') }}"
+      port: "{{ env_var('STARROCKS_PORT') | as_number }}"
+      user: "{{ env_var('STARROCKS_USER') }}"
+      # 'username' is required by the dbt-starrocks adapter/mysql-connector.
+      # If missing, it may default to the OS user, causing access denied errors.
+      username: "{{ env_var('STARROCKS_USER') }}"
+      password: "{{ env_var('STARROCKS_PASSWORD', '') }}"
+      dbname: retail_sandbox
+      schema: retail_sandbox
+      threads: 4
+      
+    production:
+      type: starrocks
+      host: "{{ env_var('STARROCKS_HOST') }}"
+      port: "{{ env_var('STARROCKS_PORT') | as_number }}"
+      user: "{{ env_var('STARROCKS_USER') }}"
+      # 'username' is required by the dbt-starrocks adapter/mysql-connector.
+      # If missing, it may default to the OS user, causing access denied errors.
+      username: "{{ env_var('STARROCKS_USER') }}"
+      password: "{{ env_var('STARROCKS_PASSWORD', '') }}"
+      dbname: retail_prod
+      schema: retail_prod
+      threads: 8
