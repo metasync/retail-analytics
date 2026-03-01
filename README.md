@@ -72,4 +72,6 @@ This project follows a decoupled monorepo architecture:
 *   `make generate`: Generate and load mock data.
 *   `make dev`: Start Dagster dev server.
 *   `make test`: Run dbt tests and Python unit tests.
+*   `make dbt-deps`: Install dbt packages.
 *   `make clean`: Clean up artifacts.
+*   `make help`: Show available commands.

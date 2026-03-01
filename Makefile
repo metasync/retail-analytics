@@ -15,6 +15,7 @@ help:
 	@echo "  make reset-db     - Reset StarRocks tables and run dbt models"
 	@echo "  make generate     - Generate mock data using Ingestion Simulator"
 	@echo "  make dev          - Start Dagster development server"
+	@echo "  make test         - Run dbt tests and Python unit tests"
 	@echo "  make dbt-deps     - Install dbt dependencies"
 	@echo "  make clean        - Remove build artifacts and temporary files"
 
@@ -49,6 +50,9 @@ dbt-deps:
 
 dev:
 	$(MAKE) -C transformation_pipeline dev
+
+test:
+	$(MAKE) -C transformation_pipeline test
 
 generate:
 	$(MAKE) -C ingestion_simulator generate ARGS="$(ARGS)"
