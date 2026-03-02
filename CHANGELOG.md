@@ -2,7 +2,7 @@
 
 All notable changes to the Retail Analytics Platform will be documented in this file.
 
-## [Unreleased] - 2026-03-02
+## [0.2.0] - 2026-03-02
 
 ### Added
 - **Master Data Management**: Introduced `master_data` project for shared dimensions (`dim_date`).
