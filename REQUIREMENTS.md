@@ -9,10 +9,11 @@ The platform simulates a real-time retail environment where data is continuously
 ## 2. Core Features
 
 ### 2.1 Architecture
-The system follows a decoupled monorepo architecture with two main components:
+The system follows a decoupled monorepo architecture with three main components:
 
 1.  **Ingestion Simulator**: A standalone service that generates mock retail data and ingests it directly into StarRocks.
-2.  **Transformation Pipeline**: A Dagster + dbt pipeline that observes the data warehouse and triggers transformations.
+2.  **Master Data**: A centralized producer of shared dimensions (`dim_date`).
+3.  **Retail Analytics**: A Dagster + dbt pipeline that observes the data warehouse and triggers transformations.
 
 ### 2.2 Component Details
 
@@ -21,6 +22,7 @@ The system follows a decoupled monorepo architecture with two main components:
 | **Data Warehouse** | StarRocks | High-performance OLAP database storing Raw, Staging, and Mart layers. |
 | **Ingestion** | Python (Stream Load) | Generates synthetic data (Orders, Customers, Products) and loads it via HTTP Stream Load. |
 | **Transformation** | dbt Core | Transforms raw data into a Star Schema (Facts & Dimensions). |
+| **Master Data** | dbt + SQL | Generates shared dimensions like `dim_date` using efficient SQL patterns. |
 | **Orchestration** | Dagster | Manages assets, observes sources, and automates execution. |
 | **Environment** | Docker / uv | Containerized infrastructure and modern Python package management. |
 
@@ -54,8 +56,12 @@ retail-analytics-platform/
 ├── ingestion_simulator/        # Standalone Ingestion Tool
 │   ├── src/                    # Python Source
 │   └── Makefile                # CLI Commands
-├── transformation_pipeline/    # Data Pipeline
-│   ├── dagster_project/        # Assets, Resources, Sensors
+├── master_data/                # Shared Dimensions (Producer)
+│   ├── src/master_data/        # Dagster Assets
+│   ├── dbt_project/            # dbt Models (dim_date)
+│   └── Makefile
+├── retail_analytics/           # Data Pipeline (Consumer)
+│   ├── src/retail_analytics/   # Dagster Assets, Resources, Sensors
 │   ├── dbt_project/            # dbt Models (Staging, Marts)
 │   └── Makefile                # Pipeline Commands
 ├── docker-compose.yml          # Infrastructure (StarRocks)
@@ -73,8 +79,9 @@ retail-analytics-platform/
 *   **Raw Layer**: `raw_customers`, `raw_products`, `raw_orders` (JSON/String types).
 *   **Staging Layer**: Type casting, cleaning, and normalization.
 *   **Marts Layer**:
-    *   `dim_customers`: SCD Type 1 dimension.
-    *   `dim_products`: Product catalog.
+    *   `dim_customer`: SCD Type 1 dimension.
+    *   `dim_product`: Product catalog.
+    *   `dim_date`: Shared date dimension (from Master Data).
     *   `fact_daily_sales`: Daily aggregated sales metrics.
 
 ## 5. Quality Assurance

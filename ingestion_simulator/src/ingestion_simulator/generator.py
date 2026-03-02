@@ -7,14 +7,18 @@ import sys
 from urllib.parse import urlparse, urlunparse
 from datetime import datetime
 from faker import Faker
-from ingestion_simulator.config import STARROCKS_HOST, STARROCKS_HTTP_PORT, STARROCKS_DB, get_auth
+from ingestion_simulator.config import (
+    STARROCKS_HOST, 
+    STARROCKS_HTTP_PORT, 
+    STARROCKS_DB, 
+    STARROCKS_BE_HTTP_PORT,
+    PRODUCT_CATEGORIES,
+    ORDER_STATUSES,
+    get_auth
+)
 
 fake = Faker()
 
-# Constants
-PRODUCT_CATEGORIES = ["Electronics", "Clothing", "Home", "Books", "Sports"]
-ORDER_STATUSES = ["PENDING", "COMPLETED", "SHIPPED", "CANCELLED"]
-STARROCKS_BE_HTTP_PORT = int(os.getenv("STARROCKS_BE_HTTP_PORT", "18040"))
 
 def stream_load(table, data):
     url = f"http://{STARROCKS_HOST}:{STARROCKS_HTTP_PORT}/api/{STARROCKS_DB}/{table}/_stream_load"

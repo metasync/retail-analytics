@@ -1,11 +1,11 @@
 load_from:
   - python_file:
-      relative_path: "transformation_pipeline/dagster_project/definitions.py"
-      location_name: "transformation_pipeline"
-      working_directory: "transformation_pipeline"
-      executable_path: "transformation_pipeline/.venv/bin/python"
+      relative_path: "retail_analytics/src/retail_analytics/definitions.py"
+      location_name: "retail_analytics"
+      working_directory: "retail_analytics"
+      executable_path: "retail_analytics/.venv/bin/python"
   - python_file:
-      relative_path: "master_data/dagster_project/definitions.py"
+      relative_path: "master_data/src/master_data/definitions.py"
       location_name: "master_data"
       working_directory: "master_data"
       executable_path: "master_data/.venv/bin/python"

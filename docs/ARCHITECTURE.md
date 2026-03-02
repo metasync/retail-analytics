@@ -26,10 +26,10 @@ We use a **monorepo** structure (`dagster-example/`) that houses multiple distin
     *   **Output**: Publishes high-quality, governable tables to the `master_data` schema.
     *   **Contract**: Downstream teams can rely on these tables but cannot modify them.
 
-*   **Transformation Pipeline (`transformation_pipeline/`)**: The **Consumer**.
+*   **Retail Analytics (`retail_analytics/`)**: The **Consumer**.
     *   **Responsibility**: Owns the domain-specific analytics for the Retail business unit.
     *   **Input**: Consumes raw data (`raw_orders`) and shared dimensions (`master_data.dim_date`).
-    *   **Output**: Produces domain-specific marts (`fact_daily_sales`, `dim_customers`).
+    *   **Output**: Produces domain-specific marts (`fact_daily_sales`, `dim_customer`).
 
 ### Benefits
 *   **Isolation**: Changes in the analytics pipeline cannot break the master data generation.
@@ -39,7 +39,7 @@ We use a **monorepo** structure (`dagster-example/`) that houses multiple distin
 ## 3. Engineering Practices
 
 ### Environment Management (`uv`)
-We use `uv` for Python package management. Each project (`master_data`, `transformation_pipeline`) has its own `pyproject.toml` and `.venv`.
+We use `uv` for Python package management. Each project (`master_data`, `retail_analytics`) has its own `pyproject.toml` and `.venv`.
 *   **Why?**: Prevents dependency conflicts. One project might need `pandas==1.5` while another needs `pandas==2.0`. Dagster's `workspace.yaml` supports loading from different environments seamlessly.
 
 ### Infrastructure as Code (Docker & Make)

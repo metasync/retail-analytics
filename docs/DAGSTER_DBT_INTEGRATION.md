@@ -26,17 +26,17 @@ We use the `dagster-dbt` library, which treats dbt models as **Software-Defined 
 *   Defines the dbt project structure.
 *   **Key Config**: `models:` section defines materialization strategies (e.g., `incremental`) which dbt handles, but Dagster visualizes.
 
-#### `dagster_project/assets/dbt_assets.py`
+#### `src/retail_analytics/assets/dbt_assets.py`
 This is the bridge code.
 ```python
 @dbt_assets(manifest=manifest_path)
 def retail_dbt_assets(context: AssetExecutionContext, dbt: DbtCliResource):
-    yield from dbt.cli(["build"], context=context).stream()
+   yield from dbt.cli(["build"], context=context).stream()
 ```
 *   **`@dbt_assets`**: This decorator tells Dagster "Read the manifest and create assets for me."
 *   **`dbt.cli(["build"])`**: This executes the dbt command when the asset is triggered.
 
-#### `dagster_project/definitions.py`
+#### `src/retail_analytics/definitions.py`
 *   **Resources**: Configures the `DbtCliResource` with the correct paths to the dbt project and executable.
 *   **Sensors**: Defines *when* to run.
 
@@ -45,11 +45,25 @@ def retail_dbt_assets(context: AssetExecutionContext, dbt: DbtCliResource):
 We don't just run dbt on a cron schedule. We use **Declarative Automation** (Sensors).
 
 ### The "Source Asset" Pattern
-In `dagster_project/assets/source_assets.py`, we define the raw tables as `AssetSpec` (or `observable_source_asset`).
+In `src/retail_analytics/assets/source_assets.py`, we define the raw tables using the `@observable_source_asset` decorator.
 ```python
-raw_orders = AssetSpec(key="raw_orders", group_name="ingestion")
+@observable_source_asset(key=AssetKey("raw_orders"), description="Raw orders table", group_name="raw")
+def raw_orders(context, starrocks):
+    # Logic to check row count or freshness
+    return ObserveResult(...)
 ```
 This tells Dagster: "There is a table called `raw_orders` that exists outside of your control, but you should watch it."
+
+## 5. Asset Organization
+
+To keep the lineage graph clean, we group assets logically:
+
+*   **raw**: Ingestion sources (`raw_orders`, etc.).
+*   **staging**: Initial dbt transformations (cleaning).
+*   **marts**: Final business logic (Facts & Dimensions).
+*   **master**: Shared dimensions from the Master Data project (`dim_date`).
+
+This is implemented via the `DagsterDbtTranslator` subclass in `dbt_assets.py`, which maps dbt directory structures (e.g., `models/staging`) to Dagster groups.
 
 ### The Automation Condition
 In `definitions.py`, we attach an `AutomationConditionSensor`.

@@ -1,10 +1,10 @@
 # Master Data Management
 
-This project manages shared dimensional data (e.g., `dim_date`) for the Retail Analytics platform. It serves as a central "Producer" of reference data that other pipelines (like `transformation_pipeline`) consume.
+This project manages shared dimensional data (e.g., `dim_date`) for the Retail Analytics platform. It serves as a central "Producer" of reference data that other pipelines (like `retail_analytics`) consume.
 
 It includes:
 - **dbt Project**: Defines the SQL logic for dimensions.
-- **Dagster Project**: Orchestrates the dbt models and exposes them as assets.
+- **Dagster Project** (`src/master_data`): Orchestrates the dbt models and exposes them as assets.
 
 ## Development
 
@@ -33,6 +33,24 @@ The `dim_date` model uses a high-performance "Numbers Table" CTE approach instea
 4.  **Date Projection**: We treat these integers as "days offset from the start date".
     *   `date_day = '2020-01-01' + num days`
     *   This allows us to generate ~27 years of daily records instantly.
+
+```sql
+with digits as (
+    select 0 as d union all select 1 ... select 9
+),
+numbers as (
+    -- Cross join to generate 0-9999
+    select d1.d + (d2.d * 10) + (d3.d * 100) + (d4.d * 1000) as num
+    from digits d1
+    cross join digits d2
+    cross join digits d3
+    cross join digits d4
+),
+dates as (
+    select date_add('2020-01-01', interval num day) as date_day
+    from numbers
+)
+```
 
 **Why this approach?**
 *   **Performance**: Columnar databases like StarRocks are heavily optimized for cross-joins. Generating 10,000 rows this way is virtually instantaneous compared to recursive loops.

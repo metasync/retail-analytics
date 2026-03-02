@@ -17,7 +17,7 @@ This project follows a decoupled monorepo architecture:
     *   Publishes reference data to the `master_data` schema.
     *   Ensures consistency across the platform.
 
-3.  **Transformation Pipeline** (`transformation_pipeline/`):
+3.  **Retail Analytics** (`retail_analytics/`):
     *   A Dagster project managing the analytics lifecycle.
     *   Consumes raw data and shared dimensions to build data marts.
     *   **dbt** models transform data (`stg_*` -> `fact_sales`).
@@ -71,10 +71,10 @@ For a deeper dive into the engineering decisions and architecture:
     *   `src/`: Python source code.
     *   `Makefile`: Simulator-specific commands.
 *   `master_data/`: Shared dimensions (Producer).
-    *   `dagster_project/`: Dagster assets.
+    *   `src/master_data/`: Dagster assets.
     *   `dbt_project/`: dbt models (e.g., `dim_date`).
-*   `transformation_pipeline/`: Analytics pipeline (Consumer).
-    *   `dagster_project/`: Dagster assets and definitions.
+*   `retail_analytics/`: Analytics pipeline (Consumer).
+    *   `src/retail_analytics/`: Dagster assets and definitions.
     *   `dbt_project/`: dbt models and tests.
 *   `dagster_home/`: Local Dagster storage (logs, run history).
 *   `docker-compose.yml`: Infrastructure (StarRocks).

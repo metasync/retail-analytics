@@ -6,7 +6,7 @@ In a mature data platform, **Master Data Management (MDM)** is critical for ensu
 
 We treat Master Data as a **Data Product**.
 *   **Producer (`master_data/`)**: A dedicated team/project responsible for defining and maintaining the "Golden Record" of shared dimensions.
-*   **Consumer (`transformation_pipeline/`)**: Downstream analytics teams that *subscribe* to these dimensions. They treat `dim_date` or `dim_geography` as read-only source tables, just like they would treat raw data from an ERP system.
+*   **Consumer (`retail_analytics/`)**: Downstream analytics teams that *subscribe* to these dimensions. They treat `dim_date` or `dim_geography` as read-only source tables, just like they would treat raw data from an ERP system.
 
 ### Why separate it?
 1.  **Consistency**: Everyone uses the same definition of "Fiscal Quarter" or "Region".
@@ -32,7 +32,10 @@ with digits as (
 numbers as (
     -- Cross join to generate 0-9999
     select d1.d + (d2.d * 10) + (d3.d * 100) + (d4.d * 1000) as num
-    from digits d1, digits d2, digits d3, digits d4
+    from digits d1
+    cross join digits d2
+    cross join digits d3
+    cross join digits d4
 ),
 dates as (
     select date_add('2020-01-01', interval num day) as date_day

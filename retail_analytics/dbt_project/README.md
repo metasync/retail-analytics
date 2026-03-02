@@ -13,8 +13,8 @@ The project follows a standard 2-layer architecture:
 
 2.  **Marts** (`models/marts/`):
     *   **Dimensions**:
-        *   `dim_customers`: Enriched customer data.
-        *   `dim_products`: Product details.
+        *   `dim_customer`: Enriched customer data.
+        *   `dim_product`: Product details.
     *   **Facts**:
         *   `fact_daily_sales`: Daily aggregated sales metrics (total revenue, order count) by product and status.
 

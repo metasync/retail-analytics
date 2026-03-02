@@ -2,9 +2,30 @@
 
 All notable changes to the Retail Analytics Platform will be documented in this file.
 
+## [0.3.0] - 2026-03-03
+
+### Refactoring & Optimization
+- **Project Structure**: Renamed `transformation_pipeline` to `retail_analytics` and adopted the standard `src/` layout for improved packaging and import resolution.
+- **dbt Logic**: Optimized incremental models (`stg_orders`, `dim_customer`) to use StarRocks primary keys instead of inefficient anti-joins.
+- **Configuration**: Extracted hardcoded constants in `ingestion_simulator` to `config.py`.
+- **Code Quality**: Refactored `get_row_count` in `source_assets.py` for robust error handling and logging.
+
+### Added
+- **Observability**: Source assets now emit `row_count` metadata for trend tracking in Dagster UI.
+- **Asset Grouping**: dbt assets are now automatically grouped into `staging` and `marts` in the UI lineage graph.
+- **Testing**: Added `retail_analytics/tests/test_definitions.py` smoke test for definition integrity.
+- **Master Data**: Added `AutomationConditionSensor` to `master_data` for consistency.
+
+### Fixed
+- Fixed `dagster_project` import errors in `source_assets.py`.
+- Fixed `DBT_PROJECT_DIR` path resolution in `dbt_assets.py`.
+- Fixed SQL syntax documentation in `MASTER_DATA_STRATEGY.md` and `master_data/README.md`.
+- Added missing `DROP TABLE` hook for `stg_order_items` in `dbt_project.yml`.
+
 ## [0.2.0] - 2026-03-02
 
 ### Added
+- Added dbt models: `stg_*`, `dim_customer`, `dim_product`, `fact_daily_sales`.
 - **Master Data Management**: Introduced `master_data` project for shared dimensions (`dim_date`).
 - **Documentation Suite**: Added comprehensive architectural docs in `docs/`:
     - `ARCHITECTURE.md`: High-level design and Data Mesh principles.

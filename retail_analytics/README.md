@@ -1,4 +1,4 @@
-# Transformation Pipeline
+# Retail Analytics
 
 This directory contains the Dagster and dbt projects for the Retail Analytics Platform. It is responsible for consuming raw data, transforming it into analytics-ready models, and orchestrating the process.
 
@@ -6,7 +6,7 @@ See the root [README.md](../README.md) for full setup instructions.
 
 ## Structure
 
-*   `dagster_project/`: Dagster definitions, resources, and sensors.
+*   `src/retail_analytics/`: Dagster definitions, resources, and sensors.
 *   `dbt_project/`: dbt models (Staging, Marts) and tests.
 *   `tests/`: Python unit tests.
 *   `Makefile`: Local development commands for the pipeline.
@@ -27,7 +27,7 @@ The pipeline transforms raw data into a Star Schema optimized for analytics:
 
 ## Development
 
-Run commands inside `transformation_pipeline/` (via `make -C transformation_pipeline` or `cd transformation_pipeline`):
+Run commands inside `retail_analytics/` (via `make -C retail_analytics` or `cd retail_analytics`):
 
 *   `make dev`: Start Dagster dev server.
 *   `make dbt-deps`: Install dbt packages (e.g., dbt-utils).

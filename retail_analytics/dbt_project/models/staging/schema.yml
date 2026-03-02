@@ -1,7 +1,9 @@
+
 version: 2
 
 models:
   - name: stg_customers
+    description: "Staging table for customers, cleaned and normalized."
     columns:
       - name: customer_id
         tests:
@@ -9,6 +11,7 @@ models:
           - not_null
 
   - name: stg_products
+    description: "Staging table for products, cleaned and normalized."
     columns:
       - name: product_id
         tests:
@@ -16,6 +19,7 @@ models:
           - not_null
 
   - name: stg_orders
+    description: "Staging table for orders, cleaned and normalized."
     columns:
       - name: order_id
         tests:
@@ -23,6 +27,7 @@ models:
           - not_null
 
   - name: stg_order_items
+    description: "Staging table for order items (line items)."
     columns:
       - name: order_id
         tests:

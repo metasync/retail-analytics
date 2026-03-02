@@ -11,6 +11,13 @@ STARROCKS_USER = os.getenv("STARROCKS_USER", "root")
 STARROCKS_PASSWORD = os.getenv("STARROCKS_PASSWORD", "")
 STARROCKS_DB = os.getenv("STARROCKS_DB", "retail_development")
 
+# BE HTTP Port for Stream Load redirects
+STARROCKS_BE_HTTP_PORT = int(os.getenv("STARROCKS_BE_HTTP_PORT", "18040"))
+
+# Simulation Constants
+PRODUCT_CATEGORIES = ["Electronics", "Clothing", "Home", "Books", "Sports"]
+ORDER_STATUSES = ["PENDING", "COMPLETED", "SHIPPED", "CANCELLED"]
+
 def get_mysql_connection_string(db=None):
     database = db if db else STARROCKS_DB
     return f"mysql+mysqlconnector://{STARROCKS_USER}:{STARROCKS_PASSWORD}@{STARROCKS_HOST}:{STARROCKS_PORT}/{database}"

@@ -1,3 +1,4 @@
+
 {{
     config(
         materialized='incremental',
@@ -18,7 +19,5 @@ select
     current_timestamp() as dbt_updated_at
 from source
 
-{% if is_incremental() %}
-    -- this filter will only be applied on an incremental run
-    where product_id in (select product_id from source)
-{% endif %}
+-- Removed tautological filter.
+-- StarRocks handles upserts efficiently via Primary Key model.

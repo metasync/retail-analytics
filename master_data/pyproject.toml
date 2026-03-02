@@ -21,13 +21,13 @@ dev = [
 ]
 
 [tool.dagster]
-module_name = "dagster_project.definitions"
+module_name = "master_data.definitions"
 
 [tool.dg]
 directory_type = "project"
 
 [tool.dg.project]
-root_module = "dagster_project"
+root_module = "master_data"
 
 [build-system]
 requires = ["uv_build>=0.8.14,<0.9.0"]

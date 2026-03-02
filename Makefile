@@ -26,7 +26,7 @@ setup: .env install up init-db dbt-deps
 	@echo "Created .env from ingestion_simulator/.env.example"
 
 install:
-	$(MAKE) -C transformation_pipeline install
+	$(MAKE) -C retail_analytics install
 	$(MAKE) -C master_data install
 	$(MAKE) -C ingestion_simulator install
 
@@ -45,29 +45,29 @@ init-db:
 reset-db:
 	$(MAKE) -C ingestion_simulator reset-db
 	$(MAKE) -C master_data dbt-build DBT_FLAGS="--full-refresh"
-	$(MAKE) -C transformation_pipeline dbt-build DBT_FLAGS="--full-refresh"
+	$(MAKE) -C retail_analytics dbt-build DBT_FLAGS="--full-refresh"
 
 dbt-deps:
 	$(MAKE) -C master_data dbt-deps
-	$(MAKE) -C transformation_pipeline dbt-deps
+	$(MAKE) -C retail_analytics dbt-deps
 
 dev:
-	# Running dagster dev from root using uv from transformation_pipeline (or any valid env)
+	# Running dagster dev from root using uv from retail_analytics (or any valid env)
 	# We need a python environment to run 'dagster dev'. 
-	# Strategy: Use transformation_pipeline's venv to run the root workspace
+	# Strategy: Use retail_analytics's venv to run the root workspace
 	# We export DAGSTER_HOME as absolute path here (removed from .env to avoid relative path error)
 	# Reverting to 'dagster dev' as 'dg dev' does not support -w workspace.yaml yet
-	export DAGSTER_HOME=$$(pwd)/dagster_home && uv run --project transformation_pipeline dagster dev -w workspace.yaml
+	export DAGSTER_HOME=$$(pwd)/dagster_home && uv run --project retail_analytics dagster dev -w workspace.yaml
 
 test:
 	$(MAKE) -C master_data test
-	$(MAKE) -C transformation_pipeline test
+	$(MAKE) -C retail_analytics test
 
 generate:
 	$(MAKE) -C ingestion_simulator generate ARGS="$(ARGS)"
 
 clean:
-	$(MAKE) -C transformation_pipeline clean
+	$(MAKE) -C retail_analytics clean
 	$(MAKE) -C master_data clean
 	$(MAKE) -C ingestion_simulator clean
 	# Clean up dagster_home but preserve configuration files

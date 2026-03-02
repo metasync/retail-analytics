@@ -27,7 +27,5 @@ renamed as (
 
 select * from renamed
 
-{% if is_incremental() %}
-    -- this filter will only be applied on an incremental run
-    where order_id not in (select order_id from {{ this }})
-{% endif %}
+-- No manual filter needed: StarRocks Primary Key table handles upserts automatically based on unique_key.
+-- If using 'append' strategy (Duplicate Key), we might need a filter, but 'incremental' usually implies unique_key merge.

@@ -27,6 +27,7 @@ models:
 
 on-run-end:
   - "DROP TABLE IF EXISTS {{ target.schema }}.stg_orders__dbt_tmp FORCE"
-  - "DROP TABLE IF EXISTS {{ target.schema }}.dim_customers__dbt_tmp FORCE"
-  - "DROP TABLE IF EXISTS {{ target.schema }}.dim_products__dbt_tmp FORCE"
+  - "DROP TABLE IF EXISTS {{ target.schema }}.stg_order_items__dbt_tmp FORCE"
+  - "DROP TABLE IF EXISTS {{ target.schema }}.dim_customer__dbt_tmp FORCE"
+  - "DROP TABLE IF EXISTS {{ target.schema }}.dim_product__dbt_tmp FORCE"
 

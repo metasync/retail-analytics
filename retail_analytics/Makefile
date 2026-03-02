@@ -32,4 +32,4 @@ clean:
 	@rm -rf $(DBT_PROJECT_DIR)/dbt_packages
 	@rm -rf .tmp_*
 	@find . -type d -name "__pycache__" -exec rm -rf {} +
-	@echo "Cleaned up transformation_pipeline."
+	@echo "Cleaned up retail_analytics."
