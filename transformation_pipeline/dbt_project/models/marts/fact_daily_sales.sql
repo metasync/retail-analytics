@@ -29,7 +29,7 @@ joined as (
         sum(oi.price * oi.quantity) as total_revenue
     from orders o
     join order_items oi on o.order_id = oi.order_id
-    group by 1, 2, 3
+    group by order_date, product_id, status
 )
 
 select * from joined

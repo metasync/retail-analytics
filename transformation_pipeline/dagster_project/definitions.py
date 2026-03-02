@@ -3,6 +3,7 @@ from dagster_dbt import DbtCliResource
 from dagster import Definitions, load_assets_from_modules, EnvVar, DefaultSensorStatus, define_asset_job, ScheduleDefinition, DefaultScheduleStatus
 import os
 import sys
+from pathlib import Path
 
 from dagster_project.assets import source_assets, dbt_assets
 from dagster_project.resources.starrocks import StarRocksResource
@@ -10,6 +11,9 @@ from dagster_project.resources.starrocks import StarRocksResource
 # Load assets
 source_assets_list = load_assets_from_modules([source_assets])
 dbt_assets_list = load_assets_from_modules([dbt_assets]) # Requires manifest.json
+
+# Use robust path logic
+DBT_PROJECT_DIR = Path(__file__).joinpath("..", "..", "dbt_project").resolve()
 
 # Resources
 starrocks_resource = StarRocksResource(
@@ -21,8 +25,8 @@ starrocks_resource = StarRocksResource(
 )
 
 dbt_resource = DbtCliResource(
-    project_dir=os.getenv("DBT_PROJECT_DIR", "./dbt_project"),
-    profiles_dir=os.getenv("DBT_PROFILES_DIR", "./dbt_project"),
+    project_dir=str(DBT_PROJECT_DIR),
+    profiles_dir=str(DBT_PROJECT_DIR),
     target=os.getenv("DBT_TARGET", "development"),
     dbt_executable=os.path.join(os.path.dirname(sys.executable), "dbt")
 )

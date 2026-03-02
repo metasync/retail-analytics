@@ -23,3 +23,7 @@ dbt_packages/
 data/
 .tmp_*/
 storage/
+
+# Dagster Home (ignore runtime data but keep config)
+dagster_home/*
+!dagster_home/dagster.yaml

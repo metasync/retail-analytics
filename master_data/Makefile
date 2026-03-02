@@ -16,7 +16,6 @@ dev:
 
 test:
 	uv run dbt test --project-dir $(DBT_PROJECT_DIR) --profiles-dir $(DBT_PROFILES_DIR) --target $(DBT_TARGET)
-	uv run pytest tests
 
 dbt-deps:
 	uv run dbt deps --project-dir $(DBT_PROJECT_DIR) --profiles-dir $(DBT_PROFILES_DIR)
@@ -32,4 +31,4 @@ clean:
 	@rm -rf $(DBT_PROJECT_DIR)/dbt_packages
 	@rm -rf .tmp_*
 	@find . -type d -name "__pycache__" -exec rm -rf {} +
-	@echo "Cleaned up transformation_pipeline."
+	@echo "Cleaned up master_data."

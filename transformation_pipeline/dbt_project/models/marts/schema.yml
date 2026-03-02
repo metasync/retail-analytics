@@ -1,38 +1,52 @@
 version: 2
 
 models:
-  - name: dim_customers
+  - name: dim_customer
+    description: "Dimensional table containing customer details, including contact info and location."
     columns:
       - name: customer_id
+        description: "Unique identifier for the customer."
         tests:
           - unique
           - not_null
 
-  - name: dim_products
+  - name: dim_product
+    description: "Dimensional table containing product catalog details."
     columns:
       - name: product_id
+        description: "Unique identifier for the product."
         tests:
           - unique
           - not_null
 
   - name: fact_daily_sales
+    description: "Fact table aggregating sales metrics (revenue, quantity, order count) by day, product, and order status."
     columns:
       - name: order_date
+        description: "The date when the orders were placed."
         tests:
           - not_null
       - name: product_id
+        description: "Foreign key to the product dimension."
         tests:
           - not_null
           - relationships:
               arguments:
-                to: ref('dim_products')
+                to: ref('dim_product')
                 field: product_id
       - name: status
+        description: "Status of the order (e.g., COMPLETED, SHIPPED)."
         tests:
           - not_null
           - accepted_values:
               arguments:
                 values: ['PENDING', 'COMPLETED', 'SHIPPED', 'CANCELLED']
+      - name: num_orders
+        description: "Count of distinct orders for this grouping."
+      - name: total_quantity
+        description: "Sum of quantity of items sold."
+      - name: total_revenue
+        description: "Total revenue generated (price * quantity)."
 
     # Composite key unique test
     tests:

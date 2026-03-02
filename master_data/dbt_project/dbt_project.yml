@@ -1,0 +1,22 @@
+name: 'master_data_dbt'
+version: '1.0.0'
+config-version: 2
+
+profile: 'master_data'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  master_data_dbt:
+    marts:
+      +materialized: table

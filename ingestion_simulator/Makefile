@@ -20,9 +20,9 @@ generate-help:
 	uv run ingest data generate --help
 
 clean:
-	rm -rf .venv
-	rm -f requirements.txt
-	find . -type d -name "__pycache__" -exec rm -rf {} +
+	@rm -rf .venv
+	@rm -f requirements.txt
+	@find . -type d -name "__pycache__" -exec rm -rf {} +
 
 help:
 	@echo "Available commands:"

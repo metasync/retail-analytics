@@ -1,0 +1,11 @@
+load_from:
+  - python_file:
+      relative_path: "transformation_pipeline/dagster_project/definitions.py"
+      location_name: "transformation_pipeline"
+      working_directory: "transformation_pipeline"
+      executable_path: "transformation_pipeline/.venv/bin/python"
+  - python_file:
+      relative_path: "master_data/dagster_project/definitions.py"
+      location_name: "master_data"
+      working_directory: "master_data"
+      executable_path: "master_data/.venv/bin/python"

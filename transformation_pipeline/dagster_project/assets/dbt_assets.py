@@ -2,8 +2,10 @@ from dagster import AssetExecutionContext, AssetKey, AutoMaterializePolicy
 from dagster_dbt import DbtCliResource, dbt_assets, DagsterDbtTranslator
 import os
 import json
+from pathlib import Path
 
-DBT_PROJECT_DIR = os.getenv("DBT_PROJECT_DIR", "./dbt_project")
+# Use path relative to this file to be robust
+DBT_PROJECT_DIR = Path(__file__).joinpath("..", "..", "..", "dbt_project").resolve()
 
 class CustomDagsterDbtTranslator(DagsterDbtTranslator):
     def get_asset_key(self, dbt_resource_props):

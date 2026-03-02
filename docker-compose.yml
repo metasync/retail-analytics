@@ -8,7 +8,12 @@ services:
       - /bin/bash
       - -c
       - |
+        # Create log directory and empty log file to prevent tail errors
+        mkdir -p /opt/starrocks/fe/log
+        touch /opt/starrocks/fe/log/fe.log
+        # Start FE in background
         /opt/starrocks/fe/bin/start_fe.sh --daemon
+        # Wait for log to be populated (robust tail)
         sleep 5
         tail -f /opt/starrocks/fe/log/fe.log
     ports:
@@ -17,6 +22,8 @@ services:
       - "19030:9030" # MySQL port
     environment:
       - TZ=UTC
+      # Limit Java Heap for local development stability
+      - JAVA_OPTS="-Xmx4g -Xms512m"
     networks:
       - retail-analytics-net
     healthcheck:
