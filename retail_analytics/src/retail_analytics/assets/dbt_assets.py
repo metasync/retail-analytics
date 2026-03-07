@@ -37,4 +37,16 @@ class CustomDagsterDbtTranslator(DagsterDbtTranslator):
     dagster_dbt_translator=CustomDagsterDbtTranslator()
 )
 def retail_dbt_assets(context: AssetExecutionContext, dbt: DbtCliResource):
-    yield from dbt.cli(["build"], context=context).stream()
+    # Robust streaming to handle unknown manifest nodes (e.g., checkpoints)
+    iterator = dbt.cli(["build"], context=context).stream()
+    while True:
+        try:
+            yield next(iterator)
+        except KeyError as e:
+            # dbt-starrocks sometimes emits events for internal checkpoint nodes not in manifest
+            if "checkpoint" in str(e):
+                context.log.warning(f"Ignoring unknown dbt node event: {e}")
+                continue
+            raise e
+        except StopIteration:
+            break

@@ -31,30 +31,44 @@ This project follows a decoupled monorepo architecture:
 
 ## Quick Start
 
-1.  **Setup Environment**:
-    Install dependencies, start StarRocks (Docker), and initialize the database.
+1.  **Configure**:
+    Create and configure the `.env` file.
+    ```bash
+    make create-env
+    ```
+    *   **Remote/JupyterHub Users**: Open `.env` and set `STARROCKS_HOST` to your remote database IP.
+    *   **Local Users**: No changes needed (defaults to `127.0.0.1`).
+
+2.  **Setup Environment**:
+    Install dependencies, start StarRocks (if local), and initialize the database.
     ```bash
     make setup
     ```
 
-2.  **Start Dagster**:
+3.  **Start Dagster**:
     Launch the Dagster UI (available at http://localhost:3000).
     ```bash
     make dev
     ```
 
-3.  **Generate Data**:
+4.  **Generate Data**:
     In a new terminal, generate mock data and load it into StarRocks.
     ```bash
     make generate
     ```
     You will see logs indicating successful Stream Load.
 
-4.  **Observe & Transform**:
+5.  **Observe & Transform**:
     *   Go to Dagster UI (Overview > Jobs).
     *   The `check_sources_job` runs every minute to detect new data.
     *   Once data is detected, the `default_automation_condition_sensor` will automatically trigger the dbt models (`stg_*` -> `dim_*`, `fact_*`).
     *   You can also manually materialize assets if you prefer.
+
+6.  **Remote Development (JupyterHub)**:
+    This project supports remote development where StarRocks is hosted externally (e.g., in a shared Kubernetes cluster).
+    *   **Configuration**: Set `STARROCKS_HOST` in `.env` to your remote IP/hostname (anything other than `127.0.0.1` or `localhost`).
+    *   **Smart Setup**: `make setup` will automatically detect the remote host and **skip** Docker container startup, while still initializing the database tables.
+    *   **Safety**: `make reset-db` will prompt for confirmation before dropping tables on a remote database.
 
 ## Documentation
 
@@ -82,12 +96,13 @@ For a deeper dive into the engineering decisions and architecture:
 
 ## Commands
 
-*   `make setup`: Full setup (install, up, init-db).
+*   `make setup`: Full setup (install, check-env, infra-check, init-db).
+*   `make create-env`: Create configuration file from template.
 *   `make install`: Install Python dependencies (using `uv`).
-*   `make up`: Start StarRocks containers.
-*   `make down`: Stop containers.
+*   `make up`: Start StarRocks containers (Local only).
+*   `make down`: Stop containers (Local only).
 *   `make init-db`: Initialize StarRocks database/tables.
-*   `make reset-db`: Reset database (DROP/CREATE) and re-run dbt models.
+*   `make reset-db`: Reset database (DROP/CREATE) and re-run dbt models (Prompts if remote).
 *   `make generate`: Generate and load mock data.
 *   `make dev`: Start Dagster dev server.
 *   `make test`: Run dbt tests and Python unit tests.

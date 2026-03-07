@@ -27,3 +27,6 @@ storage/
 # Dagster Home (ignore runtime data but keep config)
 dagster_home/*
 !dagster_home/dagster.yaml
+
+# Jupyter
+.ipynb_checkpoints/
