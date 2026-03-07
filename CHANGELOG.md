@@ -2,6 +2,17 @@
 
 All notable changes to the Retail Analytics Platform will be documented in this file.
 
+## [0.3.1] - 2026-03-03
+
+### Infrastructure & DevEx
+- **Smart Makefile**: Added auto-detection for Local vs. Remote (`STARROCKS_HOST`) environments.
+    - `make setup` skips Docker startup if connecting to a remote database (e.g., JupyterHub).
+    - `make reset-db` prompts for confirmation when running against a remote database.
+- **Webserver Config**: Added `DAGSTER_WEBSERVER_HOST` and `DAGSTER_WEBSERVER_PORT` support in `.env` (defaulting to `0.0.0.0:3000`).
+
+### Fixed
+- **Robustness**: Patched `dbt_assets.py` to ignore internal `checkpoint` events from dbt adapters, preventing crashes during incremental runs.
+
 ## [0.3.0] - 2026-03-03
 
 ### Refactoring & Optimization

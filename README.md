@@ -56,6 +56,12 @@ This project follows a decoupled monorepo architecture:
     *   Once data is detected, the `default_automation_condition_sensor` will automatically trigger the dbt models (`stg_*` -> `dim_*`, `fact_*`).
     *   You can also manually materialize assets if you prefer.
 
+5.  **Remote Development (JupyterHub)**:
+    This project supports remote development where StarRocks is hosted externally (e.g., in a shared Kubernetes cluster).
+    *   **Configuration**: Set `STARROCKS_HOST` in `.env` to your remote IP/hostname (anything other than `127.0.0.1` or `localhost`).
+    *   **Smart Setup**: `make setup` will automatically detect the remote host and **skip** Docker container startup, while still initializing the database tables.
+    *   **Safety**: `make reset-db` will prompt for confirmation before dropping tables on a remote database.
+
 ## Documentation
 
 For a deeper dive into the engineering decisions and architecture:
