@@ -47,6 +47,16 @@ models:
         description: "Sum of quantity of items sold."
       - name: total_revenue
         description: "Total revenue generated (price * quantity)."
+      - name: day_name
+        description: "Name of the day (e.g., Monday, Tuesday) derived from dim_date."
+      - name: month_name
+        description: "Name of the month (e.g., January, February) derived from dim_date."
+      - name: quarter
+        description: "Fiscal quarter (1-4) derived from dim_date."
+      - name: year
+        description: "Year derived from dim_date."
+      - name: is_weekend
+        description: "Boolean flag indicating if the date is a weekend."
 
     # Composite key unique test
     tests:

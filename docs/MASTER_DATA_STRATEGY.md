@@ -8,6 +8,25 @@ We treat Master Data as a **Data Product**.
 *   **Producer (`master_data/`)**: A dedicated team/project responsible for defining and maintaining the "Golden Record" of shared dimensions.
 *   **Consumer (`retail_analytics/`)**: Downstream analytics teams that *subscribe* to these dimensions. They treat `dim_date` or `dim_geography` as read-only source tables, just like they would treat raw data from an ERP system.
 
+### Example: Consuming `dim_date`
+In our `retail_analytics` project, the fact table (`fact_daily_sales`) joins with the shared `dim_date` table to enrich its data with standardized calendar attributes:
+
+```sql
+-- In retail_analytics/.../fact_daily_sales.sql
+enriched_sales as (
+    select
+        da.order_date,
+        da.total_revenue,
+        -- Dimension Attributes from Master Data
+        dd.day_name,
+        dd.quarter,
+        dd.is_weekend
+    from daily_aggregated da
+    left join {{ source('master_data', 'dim_date') }} dd
+        on cast(da.order_date as date) = dd.date_day
+)
+```
+
 ### Why separate it?
 1.  **Consistency**: Everyone uses the same definition of "Fiscal Quarter" or "Region".
 2.  **Governance**: Changes to core business logic are centralized and version-controlled.

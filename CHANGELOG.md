@@ -2,6 +2,17 @@
 
 All notable changes to the Retail Analytics Platform will be documented in this file.
 
+## [0.3.2] - 2026-03-16
+
+### Added
+- **Data Mesh Integration**: Integrated the centralized `dim_date` from `master_data` into the `retail_analytics` pipeline.
+    - Updated `fact_daily_sales` to join with `dim_date`, enriching the fact table with standard calendar attributes (`day_name`, `is_weekend`, `quarter`, etc.).
+    - Implemented `on_schema_change='append_new_columns'` in dbt config to gracefully handle schema evolution in incremental microbatch models.
+    - Documented the new master data columns and tests in `schema.yml`.
+
+### Changed
+- **Documentation**: Updated `MASTER_DATA_STRATEGY.md` to include a practical example of downstream consumption in `fact_daily_sales`.
+
 ## [0.3.1] - 2026-03-03
 
 ### Infrastructure & DevEx
